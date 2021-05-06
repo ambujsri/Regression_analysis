@@ -121,7 +121,7 @@ def frwd_selection(df2):
 res_df = pd.DataFrame()
 res_dict = {}
 for i in range (1000):
-    print i
+    print (i)
     cols = ['delG']
     datax = norm_fe.fillna(0)
     
