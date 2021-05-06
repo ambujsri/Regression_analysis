@@ -112,60 +112,58 @@ def random_forest(df2, results):
     return rf1
 
 
-# =============================================================================
-# def back_sel_by_accuracy2(df2,method='GNB',validation='NFCV', num_steps=1):
-#     
-#     hold = 0
-#     df4 = df2.drop(['results'],axis = 1)
-#     df3 = df2
-# #    print num_steps
-#     for steps in range(num_steps):
-#         
-#         for cols in df4.columns:
-#             
-#             df3 = df3.drop([cols],axis = 1)
-# #==============================================================================
-# #             if (method == 'GNB'):
-# #                 model = gausian_naive_bayes(df3,results)
-# #                 preds = model.predict(df3)
-# #             elif (method == 'DT'):
-# #                 model = decision_tree(df3,results)
-# #                 preds = model.predict(df3)
-# #             elif (method == 'SVM'):
-# #                 model = support_vector_machine(df3,results)
-# #                 preds = model.predict(df3)
-# #             elif (method == 'RF'):
-# #                 model = random_forest(df3,results)
-# #                 preds = model.predict(df3)
-# #==============================================================================
-#                 
-# #            print preds
-#             if validation == 'NFCV':
-#                 senstivity, specificity, accuracy, accuracy2 = nfold_cv(df3,10, method)
-#             elif validation == 'JKT':
-#                 senstivity, specificity, accuracy, accuracy2 = JK_Test(df3, method)
-# #            tp,tn,fp,fn = JK_Test(df3,method)
-# #            senstivity = float(tp)/float(tp+fn)
-# #            specificity = float(tn)/float(tn+fp)
-# ##            accuracy = float(tp+tn)/float(tp+tn+fp+fn)
-# #            accuracy2 = float(senstivity+specificity)/2
-#             
-#             if accuracy2 - hold <= 0:
-#                 
-#                 df3 = df2
-#                 
-#             else:
-#                 
-# #                print cols,hold, accuracy2
-#                 hold = accuracy2
-#                 df2 = df3
-#                 
-#             if hold == 0:
-#                 hold = accuracy2
-#         
-#             
-#     return df2
-# =============================================================================
+def back_sel_by_accuracy2(df2,method='GNB',validation='NFCV', num_steps=1):
+    
+    hold = 0
+    df4 = df2.drop(['results'],axis = 1)
+    df3 = df2
+#    print num_steps
+    for steps in range(num_steps):
+        
+        for cols in df4.columns:
+            
+            df3 = df3.drop([cols],axis = 1)
+#==============================================================================
+#             if (method == 'GNB'):
+#                 model = gausian_naive_bayes(df3,results)
+#                 preds = model.predict(df3)
+#             elif (method == 'DT'):
+#                 model = decision_tree(df3,results)
+#                 preds = model.predict(df3)
+#             elif (method == 'SVM'):
+#                 model = support_vector_machine(df3,results)
+#                 preds = model.predict(df3)
+#             elif (method == 'RF'):
+#                 model = random_forest(df3,results)
+#                 preds = model.predict(df3)
+#==============================================================================
+                
+#            print preds
+            if validation == 'NFCV':
+                senstivity, specificity, accuracy, accuracy2 = nfold_cv(df3,10, method)
+            elif validation == 'JKT':
+                senstivity, specificity, accuracy, accuracy2 = JK_Test(df3, method)
+#            tp,tn,fp,fn = JK_Test(df3,method)
+#            senstivity = float(tp)/float(tp+fn)
+#            specificity = float(tn)/float(tn+fp)
+##            accuracy = float(tp+tn)/float(tp+tn+fp+fn)
+#            accuracy2 = float(senstivity+specificity)/2
+            
+            if accuracy2 - hold <= 0:
+                
+                df3 = df2
+                
+            else:
+                
+#                print cols,hold, accuracy2
+                hold = accuracy2
+                df2 = df3
+                
+            if hold == 0:
+                hold = accuracy2
+        
+            
+    return df2
 
 
 def frwd_sel_by_accuracy2(df2, method='GNB', validation='NFCV', num_steps=1):
@@ -212,57 +210,57 @@ def frwd_sel_by_accuracy2(df2, method='GNB', validation='NFCV', num_steps=1):
 #    df5['delG'] = df2['delG']
     return df3
 # =============================================================================
-# def nfold_cv(df2,n,method='GNB'):
-#     df3 = df2.sample(frac=1).reset_index(drop=True)
-# #    print df3
-#     length = len(df3)
-#     test_len = length / n
-#
-#     x = 0
-#     total_accuracy2 = 0
-#     total_accuracy1 = 0
-#     total_specificity = 0
-#     total_senstivity = 0
-#     for i in range(n):
-#         df_test = df3[x:x+test_len]
-#         hold1 = df3[0:x]
-#         hold2 = df3[x+test_len:]
-#         x = x+test_len
-#         frames = [hold1, hold2]
-#         df_train = pd.concat(frames)
-#         train_results = df_train ['results']
-#         test_results = df_test ['results']
-# #        del df_train['results']
-#         df_train = df_train.drop(['results'],axis = 1)
-#         df_test = df_test.drop(['results'],axis = 1)
-# #        del df_test['results']
-#         if (method == 'GNB'):
-#             model = gausian_naive_bayes(df_train,train_results)
-#             pred1 = model.predict(df_test)
+def nfold_cv(df2,n,method='GNB'):
+    df3 = df2.sample(frac=1).reset_index(drop=True)
+#    print df3
+    length = len(df3)
+    test_len = length / n
 
-#         elif (method == 'DT'):
-#             model = decision_tree(df_train,train_results)
-#             pred1 = model.predict(df_test)
-#         elif (method == 'SVM'):
-#             model = support_vector_machine(df_train,train_results)
-#             pred1 = model.predict(df_test)
-#         elif (method == 'RF'):
-#             model = random_forest(df_train,train_results)
-#             pred1 = model.predict(df_test)
-#         tp,tn,fp,fn = performance_estimate(pred1,test_results)
-#         senstivity = float(tp)/float(tp+fn)
-#         specificity = float(tn)/float(tn+fp)
-#         accuracy = float(tp+tn)/float(tp+tn+fp+fn)
-#         accuracy2 = float(senstivity+specificity)/2
-#         total_accuracy1 += accuracy
-#         total_accuracy2 += accuracy2
-#         total_senstivity += senstivity
-#         total_specificity += specificity
-#     final_senstivity = total_senstivity / n
-#     final_specificity = total_specificity / n
-#     final_accuracy2 = total_accuracy2 / n
-#     final_accuracy1 = total_accuracy1 / n
-#     return final_senstivity, final_specificity, final_accuracy1, final_accuracy2
+    x = 0
+    total_accuracy2 = 0
+    total_accuracy1 = 0
+    total_specificity = 0
+    total_senstivity = 0
+    for i in range(n):
+        df_test = df3[x:x+test_len]
+        hold1 = df3[0:x]
+        hold2 = df3[x+test_len:]
+        x = x+test_len
+        frames = [hold1, hold2]
+        df_train = pd.concat(frames)
+        train_results = df_train ['results']
+        test_results = df_test ['results']
+#        del df_train['results']
+        df_train = df_train.drop(['results'],axis = 1)
+        df_test = df_test.drop(['results'],axis = 1)
+#        del df_test['results']
+        if (method == 'GNB'):
+            model = gausian_naive_bayes(df_train,train_results)
+            pred1 = model.predict(df_test)
+
+        elif (method == 'DT'):
+            model = decision_tree(df_train,train_results)
+            pred1 = model.predict(df_test)
+        elif (method == 'SVM'):
+            model = support_vector_machine(df_train,train_results)
+            pred1 = model.predict(df_test)
+        elif (method == 'RF'):
+            model = random_forest(df_train,train_results)
+            pred1 = model.predict(df_test)
+        tp,tn,fp,fn = performance_estimate(pred1,test_results)
+        senstivity = float(tp)/float(tp+fn)
+        specificity = float(tn)/float(tn+fp)
+        accuracy = float(tp+tn)/float(tp+tn+fp+fn)
+        accuracy2 = float(senstivity+specificity)/2
+        total_accuracy1 += accuracy
+        total_accuracy2 += accuracy2
+        total_senstivity += senstivity
+        total_specificity += specificity
+    final_senstivity = total_senstivity / n
+    final_specificity = total_specificity / n
+    final_accuracy2 = total_accuracy2 / n
+    final_accuracy1 = total_accuracy1 / n
+    return final_senstivity, final_specificity, final_accuracy1, final_accuracy2
 # =============================================================================
 
 
